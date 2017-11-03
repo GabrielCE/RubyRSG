@@ -21,7 +21,8 @@ end
 #   split_definition "\n<start>\nYou <adj> <name> . ;\n;\n"
 #     returns ["<start>", "You <adj> <name> .", ""]
 def split_definition(raw_def)
-  # TODO: your implementation here
+  # Only works for a single string. If needed, this can be amended
+  raw_def.tr(';', '').split("\n")
 end
 
 # Takes an array of definitions where the definitions have been
@@ -34,14 +35,24 @@ end
 # to_grammar_hash([["<start>", "The   <object>   <verb>   tonight."], ["<object>", "waves", "big    yellow       flowers", "slugs"], ["<verb>", "sigh <adverb>", "portend like <object>", "die <adverb>"], ["<adverb>", "warily", "grumpily"]])
 # returns {"<start>"=>[["The", "<object>", "<verb>", "tonight."]], "<object>"=>[["waves"], ["big", "yellow", "flowers"], ["slugs"]], "<verb>"=>[["sigh", "<adverb>"], ["portend", "like", "<object>"], ["die", "<adverb>"]], "<adverb>"=>[["warily"], ["grumpily"]]}
 def to_grammar_hash(split_def_array)
-  # TODO: your implementation here
+  grammar_hash = Hash.new
+  split_def_array.each do |arr|
+    new_array = []
+    arr.each do |strings|
+      new_array.push(strings.split)
+    end
+    grammar_hash[arr[0].downcase] = new_array[1..-1]
+  end
+  return grammar_hash
 end
+
+print to_grammar_hash([["<start>", "The   <object>   <verb>   tonight."], ["<object>", "waves", "big    yellow       flowers", "slugs"], ["<verb>", "sigh <adverb>", "portend like <object>", "die <adverb>"], ["<adverb>", "warily", "grumpily"]])
 
 # Returns true iff s is a non-terminal
 # a.k.a. a string where the first character is <
 #        and the last character is >
 def is_non_terminal?(s)
-  # TODO: your implementation here
+  s[0] == '<' and s[-1] == '>'
 end
 
 # Given a grammar hash (as returned by to_grammar_hash)
@@ -62,7 +73,30 @@ end
 # expansion, etc.). The names of non-terminals should be considered
 # case-insensitively, <NOUN> matches <Noun> and <noun>, for example.
 def expand(grammar, non_term="<start>")
-  # TODO: your implementation here
+  # NOT FINISHED!!!!
+  final_string = ''
+  string_array = grammar[non_term.downcase] # case insensitive because to_grammar_hash only inputs lowercase
+  if non_term == '<start>'
+    string_array.each do |word|
+      if is_non_terminal? word
+        final_string += ' ' + expand(grammar: grammar, non_term: word)
+      else
+        final_string += ' ' + word
+      end
+    end
+  else
+    selection = string_array[rand(string_array.length)]
+    selection.each do |word|
+      if is_non_terminal? word
+        final_string += '' + expand(grammar: grammar, non_term: word)
+      else
+        final_string += ' ' + word
+      end
+    end
+  end
+
+
+  return final_string
 end
 
 # Given the name of a grammar file,
