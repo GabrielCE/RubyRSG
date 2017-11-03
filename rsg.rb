@@ -95,7 +95,6 @@ def expand(grammar, non_term="<start>")
     end
   end
 
-
   return final_string
 end
 
@@ -112,8 +111,8 @@ end
 if __FILE__ == $0
   # TODO: your implementation of the following
   fileName = ''
-  print "Enter file name: "
-  fileName.gets.chomp
+  puts "Enter file name: "
+  fileName = gets.chomp
   rsg(fileName)
   # prompt the user for the name of a grammar file
   # rsg that file
