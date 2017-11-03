@@ -99,15 +99,22 @@ def expand(grammar, non_term="<start>")
   return final_string
 end
 
+
 # Given the name of a grammar file,
 # read the grammar file and print a
 # random expansion of the grammar
 def rsg(filename)
   # TODO: your implementation here
+  expand( to_grammar_hash( split_definition( read_grammar_defs(filename))))
+
 end
 
 if __FILE__ == $0
   # TODO: your implementation of the following
+  fileName = ''
+  print "Enter file name: "
+  fileName.gets.chomp
+  rsg(fileName)
   # prompt the user for the name of a grammar file
   # rsg that file
 end
