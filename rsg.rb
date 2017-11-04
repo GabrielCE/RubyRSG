@@ -42,7 +42,11 @@ def to_grammar_hash(split_def_array)
   split_def_array.each do |arr|
     new_array = []
     arr.each do |strings|
-      new_array.push(strings.gsub('<', ' <').gsub('>', '> ').split)
+      new_array.push(strings.gsub('<', ' <').gsub('>', '> ').split).each do|value|
+        value.each do |element|
+          element.delete(' ')
+        end
+      end
     end
     grammar_hash[arr[0].downcase] = new_array[1..-1]
   end
@@ -83,9 +87,13 @@ def expand(grammar, non_term="<start>")
     string_array.each do |word|
       word.each do |element|
         if is_non_terminal? element
-          final_string += '' + expand(grammar, element)
+          final_string += expand(grammar, element)
         else
-          final_string += ' ' + element
+          if element.count("a-zA-Z0-9").zero?
+            final_string += element
+          else
+            final_string += ' ' + element
+          end
         end
       end
     end
@@ -93,9 +101,13 @@ def expand(grammar, non_term="<start>")
     selection = string_array[rand(string_array.length)]
     selection.each do |word|
       if is_non_terminal? word
-        final_string += '' + expand(grammar,  word)
+        final_string += expand(grammar,  word)
       else
-        final_string += ' ' + word
+        if word[0].count("a-zA-Z0-9").zero?
+          final_string += word
+        else
+          final_string += ' ' + word
+        end
       end
     end
   end
