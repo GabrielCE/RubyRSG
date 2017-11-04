@@ -22,8 +22,11 @@ end
 #     returns ["<start>", "You <adj> <name> .", ""]
 def split_definition(raw_def)
   # Only works for a single string. If needed, this can be amended
-  raw_def.tr(';', '').split("\n")
+  raw_def.map { |str|
+    str.split("\n")
+  }
 end
+
 
 # Takes an array of definitions where the definitions have been
 # processed by split_definition and returns a Hash that
@@ -46,7 +49,7 @@ def to_grammar_hash(split_def_array)
   return grammar_hash
 end
 
-print to_grammar_hash([["<start>", "The   <object>   <verb>   tonight."], ["<object>", "waves", "big    yellow       flowers", "slugs"], ["<verb>", "sigh <adverb>", "portend like <object>", "die <adverb>"], ["<adverb>", "warily", "grumpily"]])
+#print to_grammar_hash([["<start>", "The   <object>   <verb>   tonight."], ["<object>", "waves", "big    yellow       flowers", "slugs"], ["<verb>", "sigh <adverb>", "portend like <object>", "die <adverb>"], ["<adverb>", "warily", "grumpily"]])
 
 # Returns true iff s is a non-terminal
 # a.k.a. a string where the first character is <
@@ -103,17 +106,16 @@ end
 # read the grammar file and print a
 # random expansion of the grammar
 def rsg(filename)
-  # TODO: your implementation here
+
   expand( to_grammar_hash( split_definition( read_grammar_defs(filename))))
 
 end
 
 if __FILE__ == $0
-  # TODO: your implementation of the following
-  fileName = ''
-  puts "Enter file name: "
-  fileName = gets.chomp
-  rsg(fileName)
   # prompt the user for the name of a grammar file
   # rsg that file
+  fileName = ''
+  puts 'Enter file name: '
+  fileName = 'Bionic-Woman-episode'
+  print rsg(fileName)
 end
