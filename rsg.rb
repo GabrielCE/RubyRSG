@@ -23,7 +23,7 @@ end
 def split_definition(raw_def)
   # Only works for a single string. If needed, this can be amended
   raw_def.map { |str|
-    str.tr("\t\n", '').sub('>', '>;').split(';')
+    str.tr("\t\n", '').sub('>', '>;').gsub('> ', '>').gsub(' <', '<').split(';')
   }
 end
 
@@ -42,7 +42,7 @@ def to_grammar_hash(split_def_array)
   split_def_array.each do |arr|
     new_array = []
     arr.each do |strings|
-      new_array.push(strings.gsub('><', '> <').split)
+      new_array.push(strings.gsub('<', ' <').gsub('>', '> ').split)
     end
     grammar_hash[arr[0].downcase] = new_array[1..-1]
   end
@@ -116,8 +116,7 @@ end
 if __FILE__ == $0
   # prompt the user for the name of a grammar file
   # rsg that file
-  fileName = ''
   puts 'Enter file name: '
-  fileName = 'Bionic-Woman-episode'
+  fileName = gets.chomp
   print rsg(fileName)
 end
