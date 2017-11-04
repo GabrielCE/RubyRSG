@@ -83,7 +83,7 @@ def expand(grammar, non_term="<start>")
     string_array.each do |word|
       word.each do |element|
         if is_non_terminal? element
-          final_string += ' ' + expand(grammar, element)
+          final_string += '' + expand(grammar, element)
         else
           final_string += ' ' + element
         end
